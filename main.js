@@ -1,3 +1,12 @@
+const radiousRatios = [5, 6, 2, 4, 1, 3];
+
+const createRGB = function(index) {
+  const firstColor = index * 30;
+  const secondColor = index * 45;
+  const thirdColor = index * 60;
+  return `rgb(${firstColor}, ${secondColor}, ${thirdColor})`;
+};
+
 const main = function() {
   const container = d3.select("#chart-container");
   const svg = container
@@ -5,12 +14,16 @@ const main = function() {
     .attr("width", 600)
     .attr("height", 400);
 
-  const circle = svg
+  svg
+    .selectAll("circle")
+    .data(radiousRatios)
+    .enter()
     .append("circle")
-    .attr("r", 50)
-    .attr("cx", 150)
-    .attr("cy", 150)
-    .attr("fill", "green");
+    .attr("r", ratios => ratios * 5)
+    .attr("cx", (ratios, index) => 60 * index + 30)
+    .attr("cy", (ratios, index) => 60 * index + 30)
+    .attr("fill", (ratios, index) => createRGB(index));
+  //also can do .attr("fill", (_, i)=> ["green", "blue", "red", "purple", "yellow", "orange"][i])
 };
 
 window.onload = main;
